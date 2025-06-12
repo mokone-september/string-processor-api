@@ -11,6 +11,10 @@
       "src": "/process-string",
       "methods": ["POST"],
       "dest": "/index.js"
+    },
+    {
+      "src": "/",
+      "dest": "/index.js"
     }
   ]
 }

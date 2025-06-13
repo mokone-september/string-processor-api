@@ -1,6 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import { z } from 'zod';
+import dotenv from 'dotenv';
+
+dotenv.config(); // Load .env in development
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -11,44 +14,38 @@ app.use(express.json());
 
 // Zod schema for request validation
 const requestSchema = z.object({
-  data: z.string().min(1, 'Data must be a non-empty string')
+  data: z.string().min(1, 'The "data" field must be a non-empty string')
 });
 
-// Root route
+// Root GET route
 app.get('/', (_req, res) => {
   res.send('Welcome to the String Processor API. Use POST /process-string');
 });
 
 // POST /process-string
 app.post('/process-string', (req, res) => {
-  try {
-    // Validate with Zod
-    const parsed = requestSchema.safeParse(req.body);
+  const parsed = requestSchema.safeParse(req.body);
 
-    if (!parsed.success) {
-      return res.status(400).json({
-        error: parsed.error.errors.map(err => err.message).join(', ')
-      });
-    }
-
-    const { data } = parsed.data;
-
-    const result = {
-      original: data,
-      word: data.split('').sort().join('')
-    };
-
-    res.json(result);
-  } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+  if (!parsed.success) {
+    return res.status(400).json({
+      error: parsed.error.errors.map((e) => e.message).join(', ')
+    });
   }
+
+  const { data } = parsed.data;
+
+  const result = {
+    original: data,
+    word: data.split('').sort().join('')
+  };
+
+  res.json(result);
 });
 
-// Start locally
+// Run locally
 if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, () => {
-    console.log(`✅ Server running on http://localhost:${PORT}`);
+    console.log(`✅ Server running at http://localhost:${PORT}`);
   });
 }
 

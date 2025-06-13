@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
     "target": "ES2020",                        // Modern JS output
-    "module": "CommonJS",                      // Node.js module format
-    "rootDir": "src",                          // Where your source files live
-    "outDir": "dist",                          // Where compiled JS will go
-    "strict": true,                            // Enable all strict type-checking
-    "esModuleInterop": true,                   // Allow default imports from CommonJS modules
-    "forceConsistentCasingInFileNames": true,  // Avoid case mismatch issues
-    "skipLibCheck": true                       // Speed up build by skipping type checks in node_modules
+    "module": "CommonJS",                      // Node.js module format (required by Vercel's Node runtime)
+    "rootDir": "src",                          // Source TypeScript files
+    "outDir": "dist",                          // Compiled JavaScript output
+    "strict": true,                            // Enable all strict type-checking options
+    "esModuleInterop": true,                   // Enables default import compatibility
+    "forceConsistentCasingInFileNames": true,  // Enforce consistent casing
+    "skipLibCheck": true                       // Skip type checking node_modules
   },
-  "include": ["src/**/*"],                     // Include all .ts files in src/
-  "exclude": ["node_modules", "dist"]          // Exclude build and deps
+  "include": ["src/**/*"],                     // All .ts files in src
+  "exclude": ["node_modules", "dist"]          // Ignore compiled output and dependencies
 }

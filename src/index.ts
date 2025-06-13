@@ -1,49 +1,55 @@
-import express, { Request, Response, NextFunction } from 'express';
-import bodyParser from 'body-parser';
+import express from 'express';
 import cors from 'cors';
 import { z } from 'zod';
-import errorHandler from './middleware/errorHandler';
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
+// Middleware
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
 
 // Zod schema for request validation
-const processStringSchema = z.object({
-  data: z.string(),
+const requestSchema = z.object({
+  data: z.string().min(1, 'Data must be a non-empty string')
 });
 
-// Health check
-app.get('/', (_req: Request, res: Response) => res.send('API Ready'));
+// Root route
+app.get('/', (_req, res) => {
+  res.send('Welcome to the String Processor API. Use POST /process-string');
+});
 
-// Main endpoint
-app.post('/process-string', (req: Request, res: Response, next: NextFunction) => {
+// POST /process-string
+app.post('/process-string', (req, res) => {
   try {
-    const parseResult = processStringSchema.safeParse(req.body);
+    // Validate with Zod
+    const parsed = requestSchema.safeParse(req.body);
 
-    if (!parseResult.success) {
-      return res.status(400).json({ error: 'Send { "data": "string" }' });
+    if (!parsed.success) {
+      return res.status(400).json({
+        error: parsed.error.errors.map(err => err.message).join(', ')
+      });
     }
 
-    const { data } = parseResult.data;
+    const { data } = parsed.data;
 
     const result = {
       original: data,
-      word: data.trim().split('').sort()
+      word: data.split('').sort().join('')
     };
 
     res.json(result);
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
-// Error handling middleware
-app.use(errorHandler);
+// Start locally
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`✅ Server running on http://localhost:${PORT}`);
+  });
+}
 
-// Start server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
-});
+export default app;

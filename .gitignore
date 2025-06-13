@@ -1,1 +1,24 @@
+# dependencies
+node_modules/
+.env
+
+# build
+dist/
+build/
+
+# logs
+*.log
+
+# OS
+.DS_Store
+
+# IDE
+.vscode/
+
+#vercel
 .vercel
+npm install
+# or
+yarn install
+# or
+pnpm install

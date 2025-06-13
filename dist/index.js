@@ -16,7 +16,7 @@ const processStringSchema = zod_1.z.object({
     data: zod_1.z.string(),
 });
 // Health check
-app.get('/', (_req, res) => res.send('API - 👋🌎'));
+app.get('/', (_req, res) => res.send('API Ready'));
 // Main endpoint
 app.post('/process-string', (req, res, next) => {
     try {

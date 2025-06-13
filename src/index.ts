@@ -1,12 +1,18 @@
 import express, { Request, Response, NextFunction } from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import errorHandler from './src/middleware/errorHandler';
+import { z } from 'zod';
+import errorHandler from './middleware/errorHandler';
 
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
+
+// Zod schema for request validation
+const processStringSchema = z.object({
+  data: z.string(),
+});
 
 // Health check
 app.get('/', (_req: Request, res: Response) => res.send('API Ready'));
@@ -14,11 +20,13 @@ app.get('/', (_req: Request, res: Response) => res.send('API Ready'));
 // Main endpoint
 app.post('/process-string', (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { data } = req.body;
+    const parseResult = processStringSchema.safeParse(req.body);
 
-    if (typeof data !== 'string') {
+    if (!parseResult.success) {
       return res.status(400).json({ error: 'Send { "data": "string" }' });
     }
+
+    const { data } = parseResult.data;
 
     const result = {
       original: data,

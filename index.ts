@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import errorHandler from './middleware/errorHandler';
+import errorHandler from './src/middleware/errorHandler';
 
 const app = express();
 

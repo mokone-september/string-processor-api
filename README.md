@@ -14,6 +14,15 @@ Create a POST API endpoint that:
 
 - Returns the sorted characters as a word array in JSON format.
 
+## 📂 Project Structure
+
+src/
+├── index.ts                # Main application entry point
+├── logger.ts               # Logger utility
+├── middleware/             # Custom middleware (error handler, validation, etc.)
+│   ├── errorHandler.ts
+│   └── validate.ts
+
 ## 🛠️ Technologies Used
 
 - Node.js
@@ -35,3 +44,7 @@ https://github.com/mokone-september/string-processor-api
 ```sh
 npm start
 ```
+
+## 📄 License
+
+MIT — free to use, modify, and distribute.

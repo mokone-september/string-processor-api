@@ -3,7 +3,8 @@ import cors from 'cors';
 import { z } from 'zod';
 import dotenv from 'dotenv';
 
-dotenv.config(); // Load .env in development
+// Load environment variables
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,7 +15,7 @@ app.use(express.json());
 
 // Zod schema for request validation
 const requestSchema = z.object({
-  data: z.string().min(1, 'The "data" field must be a non-empty string')
+  data: z.string().min(1, 'The "data" field must be a non-empty string'),
 });
 
 // Root GET route
@@ -28,23 +29,22 @@ app.post('/process-string', (req, res) => {
 
   if (!parsed.success) {
     return res.status(400).json({
-      error: parsed.error.errors.map((e) => e.message).join(', ')
+      error: parsed.error.errors.map((e) => e.message).join(', '),
     });
   }
 
   const { data } = parsed.data;
-
-  // Convert string to array of characters and sort alphabetically
   const sortedArray = data.split('').sort();
 
-  // Return the sorted array in the required format
   res.json({ word: sortedArray });
 });
 
-// Run locally
-if (process.env.NODE_ENV !== 'production') {
+// Start server only if this file is run directly
+if (require.main === module) {
   app.listen(PORT, () => {
-    console.log(`✅ Server running at: http://localhost:${PORT}`);
+    console.log(
+      `✅ Server running in ${process.env.NODE_ENV} mode at: http://localhost:${PORT}`
+    );
   });
 }
 

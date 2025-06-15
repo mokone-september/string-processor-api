@@ -30,11 +30,10 @@ app.post('/process-string', (req, res) => {
         });
     }
     const { data } = parsed.data;
-    const result = {
-        original: data,
-        word: data.split('').sort().join('')
-    };
-    res.json(result);
+    // Convert string to array of characters and sort alphabetically
+    const sortedArray = data.split('').sort();
+    // Return the sorted array in the required format
+    res.json({ word: sortedArray });
 });
 // Run locally
 if (process.env.NODE_ENV !== 'production') {

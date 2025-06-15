@@ -1,17 +1,20 @@
 import express from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
+import compression from 'compression';
 import { z } from 'zod';
 import dotenv from 'dotenv';
 
-// Load environment variables
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+// Security & performance middleware
+app.use(helmet());         // Sets secure HTTP headers
+app.use(compression());    // Gzip compress responses
+app.use(cors());           // Enable CORS
+app.use(express.json());   // Parse JSON bodies
 
 // Zod schema for request validation
 const requestSchema = z.object({
@@ -39,12 +42,19 @@ app.post('/process-string', (req, res) => {
   res.json({ word: sortedArray });
 });
 
-// Start server only if this file is run directly
+// Start server
 if (require.main === module) {
   app.listen(PORT, () => {
     console.log(
       `✅ Server running in ${process.env.NODE_ENV} mode at: http://localhost:${PORT}`
     );
+  }).on('error', (err: any) => {
+    if (err.code === 'EADDRINUSE') {
+      console.error(`❌ Port ${PORT} is already in use.`);
+      process.exit(1);
+    } else {
+      throw err;
+    }
   });
 }
 

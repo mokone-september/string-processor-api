@@ -22,10 +22,16 @@ Create a POST API endpoint that:
 
 - Vercel Serverless Functions (for deployment)
 
-- TypeScript (optional but recommended for future scalability)
+- TypeScript
 
 ## 📦 Installation
 
+```sh
+https://github.com/mokone-september/string-processor-api
+```
+
 ## 🚀 Running Locally
 
-npm run dev
+```sh
+npm start
+```

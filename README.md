@@ -41,9 +41,31 @@ https://github.com/mokone-september/string-processor-api
 
 ## 🚀 Running Locally
 
-```sh
+```bash
 npm start
 ```
+
+The server will run by default on:
+<http://localhost:3000>
+
+## API endpoints
+
+| Method | Endpoint              | Description         |
+| ------ | --------------------- | ------------------- |
+| GET    | /api/v1/ctm/tasks     | Fetch all tasks     |
+| POST   | /api/v1/ctm/tasks     | Create a new task   |
+
+## Running tests
+
+```bash
+npm run test
+```
+
+This will run backend unit and integration tests using Jest and Supertest.
+
+## Contact
+
+For any inquiries or support, please contact us at <mokoneseptember@gmail.com>.
 
 ## 📄 License
 

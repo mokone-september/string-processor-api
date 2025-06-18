@@ -48,12 +48,30 @@ npm start
 The server will run by default on:
 <http://localhost:3000>
 
-## API endpoints
+## API Endpoints
 
-| Method | Endpoint              | Description         |
-| ------ | --------------------- | ------------------- |
-| GET    | /api/v1/ctm/tasks     | Fetch all tasks     |
-| POST   | /api/v1/ctm/tasks     | Create a new task   |
+| Method | Endpoint           | Description                                 |
+| ------ | ------------------ | ------------------------------------------- |
+| POST   | /process-string    | Accepts JSON `{ data: "string" }`, returns sorted array of characters as `word` |
+
+### Example Request
+
+```json
+POST /process-string
+Content-Type: application/json
+
+{
+  "data": "example"
+}
+```
+
+### Example Response
+
+```json
+{
+  "word": ["a", "e", "e", "l", "m", "p", "x"]
+}
+```
 
 ## Running tests
 
